@@ -12,8 +12,8 @@ RUN apt-get update && apt-get -y upgrade && \
     rm -rf /var/lib/apt/lists/*
 
 # Install Rpi.GPIO
-#RUN pip3 install rpi.gpio
 RUN pip3 install pigpio
+RUN pip3 install requests
 
 ENV TELEGRAF_VERSION 1.2.1
 RUN wget -q https://dl.influxdata.com/telegraf/releases/telegraf_${TELEGRAF_VERSION}_armhf.deb && \

@@ -16,3 +16,12 @@ services:
      - /sys:/rootfs/sys:ro
      - /proc:/rootfs/proc:ro
      - /etc:/rootfs/etc:ro
+  flower-power:
+    image: seraf/rpi-flower-power
+    restart: always
+    environment:
+      REFRESH_INTERVAL: 1h
+    hostname: serre-flower-power
+    network_mode: "host"
+    volumes:
+     - ./flower-power/credentials.json:/home/pi/node-flower-bridge/credentials.json:ro
