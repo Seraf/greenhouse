@@ -1,4 +1,46 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "Influxdb",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "alertlist",
+      "name": "Alert List",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "4.2.0"
+    },
+    {
+      "type": "panel",
+      "id": "graph",
+      "name": "Graph",
+      "version": ""
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": []
   },
@@ -6,9 +48,9 @@
   "gnetId": null,
   "graphTooltip": 0,
   "hideControls": false,
-  "id": 1,
+  "id": null,
   "links": [],
-  "refresh": "1m",
+  "refresh": false,
   "rows": [
     {
       "collapse": false,
@@ -93,7 +135,21 @@
               ],
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "decimals": 2,
-              "pattern": "Température",
+              "pattern": "Temp - Serre",
+              "thresholds": [],
+              "type": "number",
+              "unit": "short"
+            },
+            {
+              "colorMode": null,
+              "colors": [
+                "rgba(245, 54, 54, 0.9)",
+                "rgba(237, 129, 40, 0.89)",
+                "rgba(50, 172, 45, 0.97)"
+              ],
+              "dateFormat": "YYYY-MM-DD HH:mm:ss",
+              "decimals": 2,
+              "pattern": "Temp - Bassin",
               "thresholds": [],
               "type": "number",
               "unit": "short"
@@ -126,6 +182,45 @@
                   {
                     "params": [
                       "ph"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": []
+            },
+            {
+              "alias": "Temp - Bassin",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "measurement": "ezotemp_in_greenhouse",
+              "policy": "default",
+              "query": "SELECT mean(\"temperature\") FROM \"ezotemp_in_greenhouse\" WHERE \"$timeFilter\" = 'select tag value' AND $timeFilter GROUP BY time($__interval) fill(null)",
+              "rawQuery": false,
+              "refId": "D",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "temperature"
                     ],
                     "type": "field"
                   },
@@ -175,7 +270,7 @@
               "tags": []
             },
             {
-              "alias": "Température",
+              "alias": "Temp - Serre",
               "dsType": "influxdb",
               "groupBy": [
                 {
@@ -233,7 +328,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "Influxdb",
+          "datasource": "${DS_INFLUXDB}",
           "fill": 1,
           "id": 1,
           "legend": {
@@ -428,7 +523,7 @@
           },
           "aliasColors": {},
           "bars": false,
-          "datasource": "Influxdb",
+          "datasource": "${DS_INFLUXDB}",
           "fill": 1,
           "id": 2,
           "legend": {
@@ -547,7 +642,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "${DS_INFLUXDB}",
           "fill": 1,
           "id": 3,
           "legend": {
@@ -664,7 +759,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "${DS_INFLUXDB}",
           "fill": 1,
           "id": 4,
           "legend": {
@@ -783,7 +878,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "${DS_INFLUXDB}",
           "fill": 1,
           "id": 5,
           "legend": {
@@ -955,7 +1050,7 @@
           },
           "aliasColors": {},
           "bars": false,
-          "datasource": null,
+          "datasource": "${DS_INFLUXDB}",
           "fill": 1,
           "id": 6,
           "legend": {
@@ -1067,6 +1162,107 @@
               "show": false
             }
           ]
+        },
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "${DS_INFLUXDB}",
+          "fill": 1,
+          "id": 9,
+          "legend": {
+            "avg": false,
+            "current": true,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": true
+          },
+          "lines": true,
+          "linewidth": 1,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 6,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "alias": "Temperature",
+              "dsType": "influxdb",
+              "groupBy": [
+                {
+                  "params": [
+                    "$__interval"
+                  ],
+                  "type": "time"
+                },
+                {
+                  "params": [
+                    "null"
+                  ],
+                  "type": "fill"
+                }
+              ],
+              "measurement": "ezotemp_in_greenhouse",
+              "policy": "default",
+              "refId": "B",
+              "resultFormat": "time_series",
+              "select": [
+                [
+                  {
+                    "params": [
+                      "temperature"
+                    ],
+                    "type": "field"
+                  },
+                  {
+                    "params": [],
+                    "type": "mean"
+                  }
+                ]
+              ],
+              "tags": []
+            }
+          ],
+          "thresholds": [],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Temperature",
+          "tooltip": {
+            "shared": true,
+            "sort": 0,
+            "value_type": "individual"
+          },
+          "type": "graph",
+          "xaxis": {
+            "mode": "time",
+            "name": null,
+            "show": true,
+            "values": []
+          },
+          "yaxes": [
+            {
+              "format": "celsius",
+              "label": "Temperature",
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": true
+            },
+            {
+              "format": "short",
+              "label": null,
+              "logBase": 1,
+              "max": null,
+              "min": null,
+              "show": false
+            }
+          ]
         }
       ],
       "repeat": null,
@@ -1084,7 +1280,7 @@
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -1114,5 +1310,5 @@
   },
   "timezone": "browser",
   "title": "Serre - Data",
-  "version": 7
+  "version": 15
 }
