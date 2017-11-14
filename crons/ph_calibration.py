@@ -49,7 +49,6 @@ class atlas_i2c:
 if __name__ == '__main__':
     temperature_addr = 0x66
     ph_addr = 0x63
-    ts = int(round(time.time()) * 1000000000)
     device_temp = atlas_i2c(pigpio.pi(), temperature_addr)
     device_ph = atlas_i2c(pigpio.pi(), ph_addr)
     temperature = device_temp.query("R")
