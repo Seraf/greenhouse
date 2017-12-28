@@ -18,6 +18,38 @@ It uses this project: [https://github.com/Parrot-Developers/node-flower-bridge](
 On the server side, because we need to store metrics and display them, I use a small Z83-V as a server. It's hosting a [grafana](https://grafana.com/) and an [influxdb](https://www.influxdata.com/).
 
 ## How to install it
+### Server (at home)
+#### The packages
+The server needs less things than the client in order to run. We only need docker.
+
+Just install [docker](https://docs.docker.com/engine/installation/) on your server.
+And be sure to have [docker-compose](https://docs.docker.com/compose/install/)
+
+#### The structure of the server
+The server has few files located in `greenhouse/server`:
+
+  * docker-compose.yml: contains all the services to launch and the parameters to give to containers
+  * env.grafana: This file allow to easily pass environment variables to grafana
+  * env.influxdb: This file allow to easily pass environment variables to influxdb
+  * nginx.conf: I chose to expose my grafana to public and add a specific url to access it. I use nginx as a reverse proxy here
+  * telegraf.conf: It allows to expose server metrics
+  
+#### The configuration
+If you don't want to expose publicly your grafana, you can remove the nginx block from the `docker-compose.yml` file.
+
+As you can see, paths are hardcoded, that means you will have to change the `/home/seraf/` by your home path.
+
+The influxdb is a bit special about volumes. It uses two volumes :
+
+  * `/home/seraf/docker-data/influxdb/data` is a directory external to this git repository where all the metrics/data are stored
+  * `/home/seraf/nas/backup` is a NFS mount where I do my backups
+  
+#### The backup
+I'm using this cron to do my backup everyday on my NAS:
+```
+0 0 * * *  cd /home/seraf/greenhouse/server/ && /usr/local/bin/docker-compose exec influxdb influxd backup -database grafana /backup/influxdb
+```
+
 ### Client (in the greenhouse)
 #### The packages
 First, you will need to install your raspberry pi. I won't explain here how to do it, it's up to you to choose the distribution you prefer.
