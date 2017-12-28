@@ -1,54 +1,26 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXDB",
-      "label": "Influxdb",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "alertlist",
-      "name": "Alert List",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "4.2.0"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "influxdb",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "limit": 100,
+        "name": "Annotations & Alerts",
+        "query": "SELECT title, text from events WHERE $timeFilter order by asc",
+        "showIn": 0,
+        "textColumn": "text",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
   "hideControls": false,
-  "id": null,
+  "id": 1,
   "links": [],
   "refresh": false,
   "rows": [
@@ -77,6 +49,7 @@
         },
         {
           "columns": [],
+          "datasource": null,
           "filterNull": true,
           "fontSize": "100%",
           "hideTimeOverride": false,
@@ -97,17 +70,17 @@
               "type": "date"
             },
             {
-              "colorMode": null,
+              "colorMode": "value",
               "colors": [
-                "rgba(245, 54, 54, 0.9)",
+                "rgba(50, 172, 45, 0.97)",
                 "rgba(237, 129, 40, 0.89)",
-                "rgba(50, 172, 45, 0.97)"
+                "rgba(245, 54, 54, 0.9)"
               ],
               "decimals": 2,
               "pattern": "pH",
               "thresholds": [
-                "6",
-                "7"
+                "6.9",
+                "7.20"
               ],
               "type": "number",
               "unit": "short"
@@ -127,7 +100,7 @@
               "unit": "short"
             },
             {
-              "colorMode": null,
+              "colorMode": "value",
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
                 "rgba(237, 129, 40, 0.89)",
@@ -136,12 +109,15 @@
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "decimals": 2,
               "pattern": "Temp - Serre",
-              "thresholds": [],
+              "thresholds": [
+                "8",
+                "10"
+              ],
               "type": "number",
-              "unit": "short"
+              "unit": "celsius"
             },
             {
-              "colorMode": null,
+              "colorMode": "value",
               "colors": [
                 "rgba(245, 54, 54, 0.9)",
                 "rgba(237, 129, 40, 0.89)",
@@ -150,7 +126,10 @@
               "dateFormat": "YYYY-MM-DD HH:mm:ss",
               "decimals": 2,
               "pattern": "Temp - Bassin",
-              "thresholds": [],
+              "thresholds": [
+                "8",
+                "10"
+              ],
               "type": "number",
               "unit": "short"
             }
@@ -162,7 +141,7 @@
               "groupBy": [
                 {
                   "params": [
-                    "$__interval"
+                    "5m"
                   ],
                   "type": "time"
                 },
@@ -174,6 +153,7 @@
                 }
               ],
               "measurement": "ezoph_in_greenhouse",
+              "orderByTime": "ASC",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -199,7 +179,7 @@
               "groupBy": [
                 {
                   "params": [
-                    "$__interval"
+                    "5m"
                   ],
                   "type": "time"
                 },
@@ -211,6 +191,7 @@
                 }
               ],
               "measurement": "ezotemp_in_greenhouse",
+              "orderByTime": "ASC",
               "policy": "default",
               "query": "SELECT mean(\"temperature\") FROM \"ezotemp_in_greenhouse\" WHERE \"$timeFilter\" = 'select tag value' AND $timeFilter GROUP BY time($__interval) fill(null)",
               "rawQuery": false,
@@ -238,7 +219,7 @@
               "groupBy": [
                 {
                   "params": [
-                    "$__interval"
+                    "5m"
                   ],
                   "type": "time"
                 },
@@ -250,6 +231,7 @@
                 }
               ],
               "measurement": "htu21df_in_greenhouse",
+              "orderByTime": "ASC",
               "policy": "default",
               "refId": "B",
               "resultFormat": "time_series",
@@ -275,7 +257,7 @@
               "groupBy": [
                 {
                   "params": [
-                    "$__interval"
+                    "5m"
                   ],
                   "type": "time"
                 },
@@ -287,6 +269,7 @@
                 }
               ],
               "measurement": "htu21df_in_greenhouse",
+              "orderByTime": "ASC",
               "policy": "default",
               "refId": "C",
               "resultFormat": "time_series",
@@ -328,7 +311,9 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 1,
           "legend": {
@@ -360,6 +345,7 @@
               "yaxis": 2
             }
           ],
+          "spaceLength": 10,
           "span": 12,
           "stack": false,
           "steppedLine": false,
@@ -451,6 +437,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -523,7 +510,9 @@
           },
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 2,
           "legend": {
@@ -546,6 +535,7 @@
           "renderer": "flot",
           "repeat": null,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -615,6 +605,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -642,7 +633,9 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 3,
           "legend": {
@@ -665,6 +658,7 @@
           "renderer": "flot",
           "repeat": null,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -732,6 +726,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -759,7 +754,9 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 4,
           "legend": {
@@ -782,6 +779,7 @@
           "renderer": "flot",
           "repeat": null,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -851,6 +849,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -878,7 +877,9 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 5,
           "legend": {
@@ -901,6 +902,7 @@
           "renderer": "flot",
           "repeat": null,
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 3,
           "stack": false,
           "steppedLine": false,
@@ -977,6 +979,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1019,8 +1022,8 @@
               {
                 "evaluator": {
                   "params": [
-                    6,
-                    7
+                    6.3,
+                    7.5
                   ],
                   "type": "outside_range"
                 },
@@ -1050,7 +1053,9 @@
           },
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 6,
           "legend": {
@@ -1071,6 +1076,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
@@ -1093,6 +1099,7 @@
                 }
               ],
               "measurement": "ezoph_in_greenhouse",
+              "orderByTime": "ASC",
               "policy": "default",
               "refId": "A",
               "resultFormat": "time_series",
@@ -1119,14 +1126,14 @@
               "fill": true,
               "line": true,
               "op": "lt",
-              "value": 6
+              "value": 6.3
             },
             {
               "colorMode": "critical",
               "fill": true,
               "line": true,
               "op": "gt",
-              "value": 7
+              "value": 7.5
             }
           ],
           "timeFrom": null,
@@ -1139,6 +1146,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1149,8 +1157,8 @@
               "format": "none",
               "label": "pH",
               "logBase": 1,
-              "max": "7.5",
-              "min": "5.5",
+              "max": "8",
+              "min": "5.8",
               "show": true
             },
             {
@@ -1166,7 +1174,9 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_INFLUXDB}",
+          "dashLength": 10,
+          "dashes": false,
+          "datasource": "influxdb",
           "fill": 1,
           "id": 9,
           "legend": {
@@ -1187,6 +1197,7 @@
           "points": false,
           "renderer": "flot",
           "seriesOverrides": [],
+          "spaceLength": 10,
           "span": 6,
           "stack": false,
           "steppedLine": false,
@@ -1240,6 +1251,7 @@
           },
           "type": "graph",
           "xaxis": {
+            "buckets": null,
             "mode": "time",
             "name": null,
             "show": true,
@@ -1310,5 +1322,5 @@
   },
   "timezone": "browser",
   "title": "Serre - Data",
-  "version": 15
+  "version": 6
 }

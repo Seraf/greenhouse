@@ -13,7 +13,7 @@ with open('/checks/credentials-flower-power.json') as credentials_file:
                              'username': credentials['username'],
                              'password': credentials['password'],
                              'client_id': credentials['client_id'],
-                             'client_secret': credentials['client_secret'],
+                             'client_secret': credentials['client_secret']
                              })
     response = req.json()
 
