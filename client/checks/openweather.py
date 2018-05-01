@@ -14,7 +14,7 @@ with open('/checks/credentials-openweather.json') as credentials_file:
                                'units': credentials['units'],
                                'lang': credentials['lang']})
     response = req.json()
-    
+
     temperature = response['main']['temp']
     pressure = response['main']['pressure']
     humidity = response['main']['humidity']
@@ -25,3 +25,5 @@ with open('/checks/credentials-openweather.json') as credentials_file:
         pressure=pressure if pressure is not None else 0,
         humidity=humidity if humidity is not None else 0,
         clouds=clouds if clouds is not None else 0))
+
+    exit(0)

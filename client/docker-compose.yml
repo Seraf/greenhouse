@@ -1,13 +1,14 @@
 version: "3"
 services:
   telegraf:
-    image: seraf/rpi-greenhouse-telegraf
+    image: seraf/rpi-greenhouse-telegraf:latest
     restart: always
     environment:
       HOST_PROC: /rootfs/proc
       HOST_SYS: /rootfs/sys
       HOST_ETC: /rootfs/etc
     hostname: serre-telegraf
+    privileged: true
     network_mode: "host"
     volumes:
      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
@@ -16,12 +17,7 @@ services:
      - /sys:/rootfs/sys:ro
      - /proc:/rootfs/proc:ro
      - /etc:/rootfs/etc:ro
-  flower-power:
-    image: seraf/rpi-flower-power
-    restart: always
-    environment:
-      REFRESH_INTERVAL: 1h
-    hostname: serre-flower-power
-    network_mode: "host"
-    volumes:
-     - ./flower-power/credentials.json:/home/pi/node-flower-bridge/credentials.json:ro
+    logging:
+      options:
+        max-size: "2m"
+        max-file: "10"

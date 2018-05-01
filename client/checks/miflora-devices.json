@@ -1,0 +1,14 @@
+{
+  "devices_list": [
+    {
+      "mac": "C4:7C:8D:66:31:7B",
+      "location": "Lasagnes tours",
+      "identifier": "Lasagnes-1"
+    },
+    {
+      "mac": "C4:7C:8D:66:32:39",
+      "location": "Lasagnes table",
+      "identifier": "Lasagnes-2"
+    }
+  ]
+}
